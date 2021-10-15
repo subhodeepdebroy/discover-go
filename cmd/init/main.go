@@ -35,8 +35,10 @@ func main() {
 func getKeywords(ctx *gin.Context) {
 	var result bson.M
 	filter := bson.D{{}}; 
+	projection := bson.D{{"_id", 0}};
+	opts := options.FindOne().SetProjection(projection);
 	coll := dbClient.Database("appbazaar").Collection("discover_keywordscollection");
-	err := coll.FindOne(context.TODO(), filter).Decode(&result);
+	err := coll.FindOne(context.TODO(), filter, opts).Decode(&result);
 
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
